@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>寶可夢圖鑑列表</h1>
+    <button onclick='fetchPokemon()'>載入寶可夢圖鑑列表(圖片編號1~898)</button>
+    <button id="btn2">載入寶可夢圖鑑列表2(圖片編號300~599)</button>
+    <button id="btn3">載入寶可夢圖鑑列表3(圖片編號600~898)</button>
+    <button id="btn4">隨機載入寶可夢圖鑑列表4(圖片編號1~898)</button>
+    <button id="btn5">隨機載入寶可夢圖鑑列表5(圖片編號201~600)</button>
+    <button id ='fetchPokemon_appendChild()'>載入寶可夢圖鑑列表appendChild()</button>
+    
+    <div id='container'>
+        <!--img src="https://assets.pokemon.com/assets/cms2/img/pokedex/detail/001.png" /-->
+    </div>
+
+    <script>
+        let container = document.getElementById('container');
+        
+        window.onload = setPokemon(); //onload: 頁面加載後立即執行JavaScript
+
+        //設定圖片抓取來源
+        function setPokemon() {
+            let h1 = document.getElementsByTagName("h1")[0];
+            h1.innerHTML = "Pokemon寶可夢圖鑑列表";
+
+            let fileName = "001";
+            let pkImg = `<img src = 'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${fileName}.png'>`;
+
+            container.innerHTML = pkImg;
+        }
+        
+        function setPokemon_2() {
+            let h1 = document.getElementsByTagName("h1")[0];
+            h1.innerHTML = "Pokemon寶可夢圖鑑列表";
+
+            let fileName = "001";
+            let pkImg = `<img src = 'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${fileName}.png'>`;
+
+            container.innerHTML = pkImg;
+        }
+
+        function setPokemon_3() {
+            let h1 = document.getElementsByTagName("h1")[0];
+            h1.innerHTML = "Pokemon寶可夢圖鑑列表";
+
+            let fileName = "001";
+            let pkImg = `<img src = 'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${fileName}.png'>`;
+
+            container.innerHTML = pkImg;
+        }
+
+        function setPokemon_4() {
+            let h1 = document.getElementsByTagName("h1")[0];
+            h1.innerHTML = "Pokemon寶可夢圖鑑列表";
+
+            let fileName = "001";
+            let pkImg = `<img src = 'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${fileName}.png'>`;
+
+            container.innerHTML = pkImg;
+        }
+
+        function setPokemon_5() {} {
+            let h1 = document.getElementsByTagName("h1")[0];
+            h1.innerHTML = "Pokemon寶可夢圖鑑列表";
+
+            let fileName = "001";
+            let pkImg = `<img src = 'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${fileName}.png'>`;
+
+            container.innerHTML = pkImg;
+        }
+
+        //方式2:新增DOM元素
+        function appendPokemon() {
+            //...
+        }
+
+        //方式1:for迴圈 ＋ Element.innerHTML設定HTML字串
+        function fetchPokemon() {
+            container.innerHTML = "";
+
+            let pokemons = "";
+
+            for (let i = 1; i <= 898; i++) { //抓取到編號898圖片
+                fileName = i.toString().padStart(3, '0');
+                let pathFile = `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${fileName}.png`;
+                let pokemonImg = `<img src = "${pathFile}">`;
+
+                pokemons += pokemonImg;
+            }
+
+            container.innerHTML = pokemons;
+        }
+
+        function fetchPokemon_2() {
+            container.innerHTML = "";
+
+            let pokemons = "";
+
+            for (let i = 300; i <= 599; i++) { //抓取到編號599圖片
+                fileName = i.toString().padStart(3, '0');
+                let pathFile = `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${fileName}.png`;
+                let pokemonImg = `<img src = "${pathFile}">`;
+
+                pokemons += pokemonImg;
+            }
+
+            container.innerHTML = pokemons;
+        }
+
+        function fetchPokemon_3() {
+            container.innerHTML = "";
+
+            let pokemons = "";
+
+            for (let i = 600; i <= 898; i++) { //抓取到編號898圖片
+                fileName = i.toString().padStart(3, '0');
+                let pathFile = `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${fileName}.png`;
+                let pokemonImg = `<img src = "${pathFile}">`;
+
+                pokemons += pokemonImg;
+            }
+
+            container.innerHTML = pokemons;
+        }
+
+        function fetchPokemon_4() {
+            container.innerHTML = "";
+
+            let pokemons = "";
+
+            //抓取898張圖片，但是圖片順序要用隨機亂數更改
+            for (let i = 201; i<=600; i++)    //抓取到編號898圖片
+            {
+                
+                let number_random = Math.floor(Math.random() * 898)+1;
+                let fileName = number_random.toString().padStart(3, '0');
+                
+                let pathFile = `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${fileName}.png`;
+                let pokemonImg = `<img src = "${pathFile}">`;
+
+                pokemons += pokemonImg;
+            }
+            
+            container.innerHTML = pokemons;
+        }
+
+        function fetchPokemon_5() {
+            container.innerHTML = "";
+
+            let pokemons = "";
+
+            //抓取898張圖片，但是圖片順序要用隨機亂數更改
+            for (let i = 1; i<=898; i++)    //抓取到編號898圖片
+            {
+                
+                let number_random = Math.floor(Math.random() * 400)+201;
+                let fileName = number_random.toString().padStart(3, '0');
+                
+                let pathFile = `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${fileName}.png`;
+                let pokemonImg = `<img src = "${pathFile}">`;
+
+                pokemons += pokemonImg;
+            }
+            
+            container.innerHTML = pokemons;
+        }
+
+        document.getElementById("btn2").onclick = function(event) {
+            fetchPokemon_2();
+        }
+        
+        document.getElementById("btn3").onclick = function(event) {
+            fetchPokemon_3();
+        }
+
+        document.getElementById("btn4").onclick = function(event) {
+            fetchPokemon_4();
+        }
+
+        document.getElementById("btn5").onclick = function(event) {
+            fetchPokemon_5();
+        }
+
+        //方式2:for迴圈 ＋ 新增DOM元素
+        function fetchPokemon_appendChild() {
+            
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>寶可夢圖鑑列表</h1>
+    <button onclick='fetchPokemon()'>載入寶可夢圖鑑列表</button>
+    <button id="btn2">載入寶可夢圖鑑列表2</button>
+    <button id="btn3">載入寶可夢圖鑑列表3</button>
+    <button id ='fetchPokemon_appendChild()'>載入寶可夢圖鑑列表appendChild()</button>
+    
+    <div id='container'>
+        <!--img src="https://assets.pokemon.com/assets/cms2/img/pokedex/detail/001.png" /-->
+    </div>
+
+    <script>
+        let container = document.getElementById('container');
+        
+        window.onload = setPokemon(); //onload: 頁面加載後立即執行JavaScript
+
+        function setPokemon() {
+            let h1 = document.getElementsByTagName("h1")[0];
+            h1.innerHTML = "Pokemon寶可夢圖鑑列表";
+
+            let fileName = "001";
+            let pathFile = `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${fileName}.png`;
+            let pokemonImg = `<img src = "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${fileName}.png">`;
+
+            let pkImg = `<img src = 'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${fileName}.png'>`;
+
+            container.innerHTML = pokemonImg;
+        }
+        
+
+        //方式2:新增DOM元素
+        function appendPokemon() {
+            //...
+        }
+
+        //方式1:for迴圈 ＋ Element.innerHTML設定HTML字串
+        function fetchPokemon() {
+            container.innerHTML = "";
+
+            let pokemons = "";
+
+            for (let i = 1; i <= 898; i++) { //抓取到編號898圖片
+                fileName = i.toString().padStart(3, '0');
+                let pathFile = `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${fileName}.png`;
+                let pokemonImg = `<img src = "${pathFile}">`;
+
+                pokemons += pokemonImg;
+            }
+
+            container.innerHTML = pokemons;
+        }
+
+        /*let btn2 = document.getElementById("btn2"); //先抓id
+        btn2.onclick = function(event) {            //再抓點擊事件的動作
+            fetchPokemon();
+        }*/
+
+        document.getElementById("btn2").onclick = function(event) {
+            fetchPokemon();
+        }
+
+        /*let btn3 = document.getElementById("btn3");       //先抓id
+        btn3.addEventListener('click', function(event) {    //增加點擊事件的監聽器(類似Android Studio開發平台的寫法)
+            fetchPokemon();
+        })*/
+        
+        document.getElementById("btn3").onclick = function(event) {
+            fetchPokemon();
+        }
+
+        //方式2:for迴圈 ＋ 新增DOM元素
+        function fetchPokemon_appendChild() {
+            
+        }
+    </script>
+</body>
+
+</html>

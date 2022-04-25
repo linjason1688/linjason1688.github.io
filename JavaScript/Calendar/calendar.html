@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>行事曆</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <style>
+        table * {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 id="year-month">0000年-00月</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>日</th>
+                <!--<th><i class="far fa-bell"></i>日</th>--> <!--fontawesome樣板-->
+                <th>一</th>
+                <th>二</th>
+                <th>三</th>
+                <th>四</th>
+                <th>五</th>
+                <th>六</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- 動態生成日期 -->
+        </tbody>
+    </table>
+    <button type="button" class="btn btn-primary" onclick="MinMonth()">往上月</button>
+    <button type="button" class="btn btn-primary" onclick="AddMonth()">往下月</button>
+
+    <!-- Modal Add -->
+    <div class="modal fade" id="inputModal" tabindex="-1" role="dialog" aria-labelledby="inputModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="inputModalLabel">Add</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="input-area" class="modal-body">
+                    <input readonly id="date" type="text">
+                    <input id="todo-item" type="text">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="SaveTodoItem()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Info -->
+    <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="infoModalLabel">Info</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="info-area" class="modal-body">
+                    <input readonly id="info-date" type="text">
+                    <input id="info-todo-item" type="text">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="EditTodoItem()">修改</button>
+                    <button type="button" class="btn btn-primary" onclick="DeleteTodoItem()">刪除</button>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <script src="https://kit.fontawesome.com/8ef0adf45b.js" crossorigin="anonymous"></script>
+    <script>
+        //今天
+        let today = new Date();
+
+        //年月日
+        let year = today.getFullYear();
+        let month = today.getMonth();
+        let date = today.getDate();
+
+        function Init() {
+            let tbody = document.getElementsByTagName("tbody")[0];
+            tbody.innerHTML = '';
+
+            document.getElementById('year-month').innerText = `${new Date(year, month, 1).getFullYear()}年 - ${new Date(year, month, 1).getMonth() + 1}月`;
+
+            //第一天禮拜幾
+            let firstDay = new Date(year, month, 1).getDay(); //取1為第一個月的第一天
+            //取這個月有幾天
+            let dayOfMonth = new Date(year, month + 1, 0).getDate(); //取0為前一個月的最後一天
+
+            let day = 1;
+            let rows = Math.ceil((dayOfMonth + firstDay) / 7); //ceil() 無條件進位
+
+            for (let row = 0; row < rows; row ++) {
+                let tr = document.createElement("tr");
+
+                for (let col = 0; col < 7; col ++) {
+                    let td = document.createElement("td"); //列裡面的格子
+                    
+                    if (row == 0 && col < firstDay) {
+                        //上個月    //沒有印上個月剩餘的日期
+                        //以2021/5月舉例，不會印出25,26,27,28,29,30這些日期
+                    } else {
+                        if (day <= dayOfMonth) {    //1 <= 31
+                            td.innerText = day;
+
+                            if (localStorage.getItem(`${year}-${month+1}-${day}`) != null) {
+                                let ul = document.createElement('ul');
+
+                                let todoList = JSON.parse(localStorage.getItem(`${year}-${month + 1}-${day}`));
+
+                                todoList.forEach(item => {
+                                    let li = document.createElement("li");
+
+                                    li.innerText = item.title;
+
+                                    ul.appendChild(li);
+                                });
+
+                                td.appendChild(ul);
+                            }
+
+                            td.addEventListener('click', function(e) {
+                                let target;
+
+                                if (e.target.localName == 'li' || e.target.localName == 'ul') {
+                                    target = e.target.offsetParent;
+                                } else {
+                                    target = e.target;
+                                }
+
+                                $('#inputModal').modal('show');
+
+                                document.getElementById('date').value = `${year}-${month +1}-${target.childNodes[0].data}`;
+                            })
+                        }
+                        else {
+                            //下個月
+                        }
+                        day++;
+                    }
+
+                    tr.appendChild(td);
+                }
+                tbody.appendChild(tr);
+                //appendChild()，給DOM物件用
+            }
+        }
+
+        Init();
+
+        function MinMonth() {
+            //上個月
+            month--;
+            Init();
+        }
+
+        function AddMonth() {
+            //下個月
+            month++;
+            Init();
+        }
+
+        function SaveTodoItem() {
+            let date = document.getElementById("date").value;
+            let todoItem = document.getElementById("todo-item").value;
+            //遇到input輸入框，用.value寫
+
+            let todoObj = {
+                title: todoItem
+            }
+
+            let todoList = [];
+
+            if (localStorage.getItem(date) == null)
+            {
+                todoList.push(todoObj);
+                //今天沒有待辦事項
+            }
+            else {
+                todoList = JSON.parse(localStorage.getItem(data));
+                todoList.push(todoObj);
+                //今天已有待辦事項
+                //push()，給陣列用
+            }
+            
+            localStorage.setItem(date, JSON.stringify(todoList));
+
+            Init();
+        }
+    </script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

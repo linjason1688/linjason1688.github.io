@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Maps建圖釘</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <style type="text/css">
+        /*設定地圖高度以定義div的大小*/
+        /*包含地圖的元素*/
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        /*Optional: Makes the sample page fill the window */
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <script src="./city.js"></script>
+    <script src="./country.js"></script>
+    
+    <div id="map"></div>
+
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script src="./api.js"></script>
+    <script 
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA4OsnfX-2JEjYUF34XApOqCpQvMJoHEU0&callback=initMap&libraries=&v=weekly"
+        async   
+    ></script>
+    </script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>寶可夢圖鑑列表</h1>
+    <button id='addone' onclick="addPokemon()">Click +1</button>
+    <button id='removeone' onclick="removePokemon()">Clear -1</button>
+    <button id='loadall' onclick="loadAllPokemon()">Load All</button>
+    <button id='reset' onclick="resetPokemon()">Reset</button>
+    <button id='timer'>Timer</button>
+    <button id='stop'>Stop Timer</button>
+
+    <div id='container'></div>
+
+    <script>
+        let container = document.getElementById("container");
+        let index = 1;  //Pictute
+        
+
+        //load a picture
+        window.onload = function() {
+            setTimeout(appendPokemon, 3000);
+        }
+
+        function appendPokemon() {
+
+
+            let img = document.createElement("img");
+            //let no = index.toString().padStart(3, "0");
+            img.setAttribute("src", `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/001.png`);
+
+            img.addEventListener("click", removeImg);
+
+            container.appendChild(img);
+            index++;
+        }
+        
+        function removeImg(event) {
+            container.removeChild(event.target);
+        }
+        
+        function addPokemon() {
+            let img = document.createElement("img");
+            let no = index.toString().padStart(3, "0");
+            img.setAttribute("src", `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${no}.png`);
+
+            img.addEventListener("click", removeImg);
+
+            container.appendChild(img);
+            index++;
+        }
+
+        function removePokemon() {
+            let len = container.childNodes.length;
+            if (len > 0) {
+                container.removeChild(container.childNodes[lens - 1]);
+                index > 1 ? index-- : index;
+            }
+        }
+
+        function loadAllPokemon() {
+            container.innerHTML = "";
+            //container.childNodes.length = 0;
+            for (let i=1; i < 890; i++)
+            {
+                let img = document.createElement("img");
+                let no = index.toString().padStart(3, "0");
+                img.setAttribute("src", `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${no}.png`);
+
+                img.addEventListener("click", removeImg);
+
+                container.appendChild(img);
+                index++;
+
+            }
+        }
+
+        function resetPokemon() {
+            container.innerHTML = "";
+            index = 1;
+        }
+
+        let intervalId = -1;
+        let timer = document.getElementById("timer");
+        timer.addEventListener("click", function() {
+            intervalId = setInterval(addPokemon, 500);
+            
+
+            timer.disabled = true;
+        });
+
+        let stop = document.getElementById("stop");
+        stop.addEventListener("click", function() {
+            clearInterval(intervalId);
+
+            timer.disabled = false;
+        });
+    </script>
+</body>
+
+</html>
